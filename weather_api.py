@@ -19,7 +19,7 @@ class WeatherAPI:  # Объявление класса для работы с AP
         else:  # Если ключ найден
             print(f"API ключ загружен (длина: {len(self.api_key)} символов)")  # Выводим информацию о ключе
 
-    def get_weather_data(self, target_datetime, city="Moscow"):  # Метод для получения данных о погоде
+    def get_data_weather(self, target_datetime, city="Moscow"):  # Метод для получения данных о погоде
         """Получение погодных данных"""  # Строка документации метода
         if not self.api_key:  # Проверяем наличие API ключа
             print("API ключ погоды не найден")  # Сообщение об ошибке
@@ -126,6 +126,5 @@ class WeatherAPI:  # Объявление класса для работы с AP
 if __name__ == "__main__":  # Проверяем, запущен ли файл напрямую
     weather_api = WeatherAPI()  # Создаем объект класса WeatherAPI
     
-    # Тестовый запрос
-    #print("Тестовый запрос погодных данных...")  # Закомментированное сообщение
+    #print("Тестовый запрос погодных данных...")
     test_data = weather_api.get_weather_data(datetime.now(), "Moscow")  # Получаем данные о погоде в Москве
