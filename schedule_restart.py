@@ -4,7 +4,6 @@ import time
 import subprocess
 import sys
 from log_config import setup_logging
-import os
 from datetime import datetime
 
 setup_logging()
@@ -88,7 +87,7 @@ def main():
     
     scheduler = BlockingScheduler()
     
-    times = ["10:00", "12:00", "13:00", "16:00", "16:20", "18:00", "20:00", "22:00"]
+    times = ["10:02", "12:02", "13:02", "16:02", "16:22", "18:02", "20:02", "22:02"]
     
     for time_str in times:
         scheduler.add_job(
