@@ -5,3 +5,4 @@ DB_CONFIG = {
     'user': 'lottery_user',
     'password': '123456'
 }
+OPENWEATHER_API_KEY = "   "
