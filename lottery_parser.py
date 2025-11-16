@@ -5,15 +5,21 @@ import psycopg2
 from datetime import datetime
 import re
 import os
+import sys
 from dotenv import load_dotenv
+
+# Установка UTF-8 кодировки для Windows
+if sys.platform == "win32":
+    sys.stdout.reconfigure(encoding='utf-8')
+    sys.stderr.reconfigure(encoding='utf-8')
 
 # Загружаем переменные из .env
 load_dotenv()
 
-# Конфигурация БД точно как в рабочем скрипте
+# Конфигурация БД
 DB_CONFIG = {
     'host': os.getenv('DB_HOST'),
-    'port': os.getenv('DB_PORT'),  # Без преобразования в int!
+    'port': os.getenv('DB_PORT'),
     'database': os.getenv('DB_NAME'),
     'user': os.getenv('DB_USER'),
     'password': os.getenv('DB_PASSWORD')
@@ -24,10 +30,10 @@ def test_db_connection():
     try:
         conn = psycopg2.connect(**DB_CONFIG)
         conn.close()
-        print("✓ Подключение к БД успешно")
+        print("[OK] Подключение к БД успешно")
         return True
     except Exception as e:
-        print(f"✗ Ошибка подключения к БД: {e}")
+        print(f"[ERROR] Ошибка подключения к БД: {e}")
         return False
 
 def connect_db():
@@ -83,10 +89,10 @@ def add_draw_to_db(draw_data):
                 draw_data['шар8']
             ))
             conn.commit()
-            print(f"✓ Добавлен тираж {draw_data['номер_тиража']}")
+            print(f"[OK] Добавлен тираж {draw_data['номер_тиража']}")
             return True
     except Exception as e:
-        print(f"✗ Ошибка при добавлении тиража: {e}")
+        print(f"[ERROR] Ошибка при добавлении тиража: {e}")
         conn.rollback()
         return False
     finally:
@@ -97,12 +103,10 @@ def parse_datetime(date_str):
     try:
         date_str = date_str.strip()
         
-        # Пробуем разные форматы даты и времени
         for fmt in ('%d.%m.%Y %H:%M', '%d.%m.%y %H:%M', '%Y-%m-%d %H:%M', 
                    '%d.%m.%Y', '%d.%m.%y', '%Y-%m-%d'):
             try:
                 date_obj = datetime.strptime(date_str, fmt)
-                # Если в строке не было времени, добавляем 12:00 по умолчанию
                 if ':' not in date_str:
                     date_obj = datetime.combine(date_obj.date(), datetime.strptime("12:00", "%H:%M").time())
                 return date_obj
@@ -125,7 +129,6 @@ def parse_draw_number(draw_str):
 def parser():
     print("Парсер лотереи 4x20")
     
-    # Проверяем подключение к БД перед началом
     if not test_db_connection():
         print("Работа парсера прервана из-за ошибки подключения к БД")
         return
