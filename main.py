@@ -1,10 +1,9 @@
+# нужно переименовать в parser
 import psycopg2
 from psycopg2.extras import execute_values
 from datetime import datetime
 import os
 from dotenv import load_dotenv
-
-
 
 # Загружаем переменные из .env файла
 load_dotenv()
