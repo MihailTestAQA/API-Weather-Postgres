@@ -1,3 +1,4 @@
+# поиск бота и полученте id для .env
 import requests
 import os
 from dotenv import load_dotenv
